@@ -1,0 +1,33 @@
+.banner .item1 {
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.6) 35%,
+      rgba(0, 0, 0, 0.5)
+    ),
+    url("https://i.ibb.co/vYXrYsh/5.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.banner .item2 {
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.7) 35%,
+      rgba(0, 0, 0, 0.5)
+    ),
+    url("https://i.ibb.co/NyhYhQk/6.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.banner .item3 {
+  background-image: linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.6) 25%,
+      rgba(0, 0, 0, 0.5)
+    ),
+    url("https://i.ibb.co/k2QR2vB/1.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
