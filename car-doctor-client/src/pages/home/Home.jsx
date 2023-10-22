@@ -116,6 +116,7 @@ function Home() {
           </div>
         </Carousel>
       </div>
+      <div className="about-us"></div>
     </div>
   );
 }
