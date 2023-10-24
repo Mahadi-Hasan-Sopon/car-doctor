@@ -8,7 +8,7 @@ function Home() {
   return (
     <div>
       <Navbar />
-      <div className="banner max-h-[600px]">
+      <div className="banner min-h-[600px]">
         <Carousel
           autoPlay
           infiniteLoop
@@ -116,7 +116,59 @@ function Home() {
           </div>
         </Carousel>
       </div>
-      <div className="about-us"></div>
+      <div className="about-us py-20 grid md:grid-cols-2 md:gap-12 gap-6">
+        <div className="image w-full relative">
+          <div className="img1">
+            <img
+              className="w-11/12 h-full"
+              src="https://i.ibb.co/qmwyz0q/about-us-person.jpg"
+              alt=""
+            />
+            <img
+              className="relative w-2/3 md:h-1/3 lg:h-2/3 -top-28 left-1/3"
+              src="https://i.ibb.co/YRwyzVQ/about-us-parts.jpg"
+              alt=""
+            />
+          </div>
+        </div>
+        <div className="content space-y-6 -mt-20 md:mt-0">
+          <h6 className="text-xl font-bold text-primary-orange">About Us</h6>
+          <h1 className="text-5xl font-bold text-dark-01 lg:w-3/4 md:leading-[1.1]">
+            We are qualified & of experience in this field
+          </h1>
+          <p className="text-dark-03">
+            There are many variations of passages of Lorem Ipsum available, but
+            the majority have suffered alteration in some form, by injected
+            humour, or randomised words which {"don't"} look even slightly
+            believable.
+          </p>
+          <p className="text-dark-03">
+            the majority have suffered alteration in some form, by injected
+            humour, or randomised words which {"don't"} look even slightly
+            believable.
+          </p>
+          <button
+            type="button"
+            className="text-lg text-white font-semibold py-3 px-6 bg-primary-orange rounded-md"
+          >
+            Get More Info
+          </button>
+        </div>
+      </div>
+      <div className="services">
+        <h6 className="text-xl font-bold text-primary-orange">Service</h6>
+        <h1 className="text-5xl font-bold text-dark-01 lg:w-3/4 md:leading-[1.1]">
+          Our Service Area
+        </h1>
+        <p className="text-dark-03">
+          The majority have suffered alteration in some form, by injected
+          humour, or randomized words which {"don't"} look even slightly
+          believable.
+        </p>
+        <div className="service-container grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {}
+        </div>
+      </div>
     </div>
   );
 }

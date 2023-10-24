@@ -1,0 +1,126 @@
+const products = [
+  {
+    id: 5421,
+    title: "Premium Brake Pads",
+    thumbnail: "https://i.ibb.co/DDxGhsN/1.png",
+    price: 30.99,
+    description:
+      "Upgrade your vehicle's braking system with our premium brake pads. These high-quality brake pads are engineered for improved braking performance and reduced noise. They are constructed with advanced materials to provide consistent stopping power, even in challenging driving conditions. Suitable for a wide range of car makes and models, these brake pads will enhance your vehicle's safety and performance.",
+    rating: {
+      rate: 4.5,
+      count: 78,
+    },
+  },
+  {
+    id: 2157,
+    title: "Synthetic Blend Engine Oil",
+    thumbnail:
+      "https://i.ibb.co/gtBP7F6/motorcraft-5w-30-blend-synthetic-motor-oil-0-946-l.jpg",
+    price: 19.99,
+    description:
+      "Our synthetic blend engine oil offers superior protection and performance for your vehicle's engine. It's suitable for both gasoline and diesel engines, providing exceptional lubrication and temperature stability. With this engine oil, you'll experience reduced friction and wear, resulting in extended engine life and improved fuel efficiency. Choose our synthetic blend oil for a smoother and more efficient ride.",
+    rating: {
+      rate: 4.7,
+      count: 63,
+    },
+  },
+  {
+    id: 8795,
+    title: "High-Capacity 12V Car Battery",
+    thumbnail: "https://i.ibb.co/XXkJRFB/4.png",
+    price: 89.99,
+    description:
+      "Upgrade your car's power source with our high-capacity 12V car battery. This battery features excellent cold-cranking amps, ensuring reliable starts in any weather. It's ideal for a wide range of vehicles, providing the electrical strength needed to support modern vehicle electronics. Don't get stranded due to a weak battery; invest in our high-capacity 12V car battery for peace of mind on the road.",
+    rating: {
+      rate: 4.4,
+      count: 42,
+    },
+  },
+  {
+    id: 3528,
+    title: "Snow and Ice Tire Chains (Set of 2)",
+    thumbnail: "https://i.ibb.co/jkhWgT2/81-EHEk-UCt-NL.jpg",
+    price: 49.99,
+    description:
+      "Prepare for winter driving with our durable snow and ice tire chains. This set includes two tire chains designed for enhanced traction on icy and snowy roads. They are easy to install and remove, making them a practical solution for inclement weather. Keep yourself and your loved ones safe on winter roads by adding these tire chains to your vehicle's emergency kit.",
+    rating: {
+      rate: 4.6,
+      count: 54,
+    },
+  },
+  {
+    id: 6412,
+    title: "High-Efficiency Cabin Air Filter",
+    thumbnail: "https://i.ibb.co/pWCj2rS/3.png",
+    price: 12.99,
+    description:
+      "Breathe clean air inside your car with our high-efficiency cabin air filter. This filter is designed to remove dust, pollen, and odors from the air, ensuring that you and your passengers enjoy a comfortable and healthy environment. It's easy to install and compatible with various car models. Improve your driving experience by installing our cabin air filter today.",
+    rating: {
+      rate: 4.3,
+      count: 37,
+    },
+  },
+  {
+    id: 9673,
+    title: "LED Headlight Bulbs (Pair)",
+    thumbnail: "https://i.ibb.co/zx9SkPN/27c0902035417dc8bd316c7915cca030.jpg",
+    price: 39.99,
+    description:
+      "Upgrade your vehicle's lighting with our energy-efficient LED headlight bulbs. This pair of bulbs provides brighter and whiter light, enhancing your visibility on the road and improving your driving safety. They are a direct replacement for traditional halogen bulbs and are easy to install. Experience clearer and more efficient lighting with our LED headlight bulbs.",
+    rating: {
+      rate: 4.8,
+      count: 69,
+    },
+  },
+  {
+    id: 2846,
+    title: "Replacement Oxygen Sensor",
+    thumbnail:
+      "https://i.ibb.co/CBVWhST/1-How-to-Change-an-Oxygen-Sensor-oxygen-sensor.jpg",
+    price: 25.99,
+    description:
+      "Improve your vehicle's fuel efficiency and reduce emissions with our replacement oxygen sensor. This sensor is a direct fit for various car models and plays a critical role in optimizing your engine's performance. Upgrade to our high-quality oxygen sensor and enjoy better fuel economy while reducing your environmental impact.",
+    rating: {
+      rate: 4.4,
+      count: 46,
+    },
+  },
+  {
+    id: 5732,
+    title: "Durable Car Floor Mats (Set of 4)",
+    thumbnail: "https://i.ibb.co/fFJBFNG/811-IXec-No-VL-AC-UF894-1000-QL80.jpg",
+    price: 29.99,
+    description:
+      "Protect your car's interior with our durable and easy-to-clean floor mats. This set includes four mats for the front and rear seats, shielding your vehicle from dirt, spills, and wear and tear. The mats are designed to fit a wide range of car models, providing a custom look and excellent protection. Keep your car's interior looking like new with our car floor mats.",
+    rating: {
+      rate: 4.5,
+      count: 58,
+    },
+  },
+  {
+    id: 1950,
+    title: "High-Performance Spark Plugs (Set of 5)",
+    thumbnail: "https://i.ibb.co/Y3zk1XR/s-l1200.jpg",
+    price: 14.99,
+    description:
+      "Enhance your engine's efficiency and increase horsepower with our high-performance spark plugs. This set includes four plugs designed to improve ignition and combustion, resulting in better overall engine performance. Upgrade to our spark plugs for smoother acceleration and better fuel economy. Experience the benefits of a finely tuned engine with our high-performance spark plugs.",
+    rating: {
+      rate: 4.6,
+      count: 50,
+    },
+  },
+  {
+    id: 7341,
+    title: "Complete Car Wash Kit",
+    thumbnail: "https://i.ibb.co/jycFTGw/91-D-9ku0-GSL-AC-UF1000-1000-QL80.jpg",
+    price: 35.99,
+    description:
+      "Keep your vehicle looking clean and shiny with our complete car wash kit. It includes everything you need for a thorough car wash, including soap, sponges, and wax. Restore your car's shine and protect its finish with our easy-to-use kit. Make your car look its best with our complete car wash kit.",
+    rating: {
+      rate: 4.7,
+      count: 63,
+    },
+  },
+];
+
+module.exports = { products };
