@@ -1,10 +1,58 @@
 import { Carousel } from "react-responsive-carousel";
 import Navbar from "../../components/shared/Navbar";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
-
+import { useQuery } from "@tanstack/react-query";
 import "./Home.css";
+import LoadingSpinner from "../../utils/LoadingSpinner/LoadingSpinner";
+import { getServices, getProducts } from "../../API/API";
+import Swal from "sweetalert2";
+import { Link } from "react-router-dom";
+import { BsArrowRight } from "react-icons/bs";
+import { useState } from "react";
+import { AiOutlineFieldTime } from "react-icons/ai";
+import { TbDeviceLandlinePhone } from "react-icons/tb";
+import { FaMapLocationDot } from "react-icons/fa6";
+import Rating from "../../utils/Rating/Rating";
 
 function Home() {
+  const {
+    data: services,
+    error,
+    isLoading,
+  } = useQuery({
+    queryKey: ["services"],
+    queryFn: getServices,
+  });
+
+  const { data: products } = useQuery({
+    queryKey: ["products"],
+    queryFn: getProducts,
+  });
+
+  const [isShowAllService, setIsShowAllService] = useState(false);
+  const [isShowAllProducts, setIsShowAllProducts] = useState(false);
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
+
+  if (error) {
+    console.log(error);
+    Swal.fire({
+      icon: "error",
+      title: "Oops...",
+      text: error.message,
+      footer: '<a href="">Why do I have this issue?</a>',
+    });
+  }
+
+  const displayedServices =
+    services?.length > 6 && !isShowAllService ? services.slice(0, 6) : services;
+  const displayedProducts =
+    products?.length > 6 && !isShowAllProducts
+      ? products.slice(0, 6)
+      : products;
+
   return (
     <div>
       <Navbar />
@@ -116,7 +164,7 @@ function Home() {
           </div>
         </Carousel>
       </div>
-      <div className="about-us py-20 grid md:grid-cols-2 md:gap-12 gap-6">
+      <div className="about-us py-12 grid md:grid-cols-2 md:gap-12 gap-6">
         <div className="image w-full relative">
           <div className="img1">
             <img
@@ -155,19 +203,139 @@ function Home() {
           </button>
         </div>
       </div>
-      <div className="services">
-        <h6 className="text-xl font-bold text-primary-orange">Service</h6>
-        <h1 className="text-5xl font-bold text-dark-01 lg:w-3/4 md:leading-[1.1]">
+      <div className="services py-12 space-y-4">
+        <h6 className="text-xl text-center font-bold text-primary-orange">
+          Service
+        </h6>
+        <h1 className="text-5xl text-center font-bold text-dark-01">
           Our Service Area
         </h1>
-        <p className="text-dark-03">
+        <p className="text-dark-03 w-3/4 lg:w-1/2 mx-auto text-center">
           The majority have suffered alteration in some form, by injected
           humour, or randomized words which {"don't"} look even slightly
           believable.
         </p>
-        <div className="service-container grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {}
+        <div className="service-container grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
+          {displayedServices?.map((service) => (
+            <div className="p-6 rounded-xl shadow" key={service._id}>
+              <img
+                className="w-full h-52 rounded-lg"
+                src={service.thumbnail}
+                alt={service.title}
+              />
+              <h2 className="text-2xl font-bold text-dark-02">
+                {service.title}
+              </h2>
+              <div className="flex items-center justify-between">
+                <p className="text-xl font-semibold text-primary-orange">
+                  Price: ${((service.price * 100) / 100).toFixed(2)}
+                </p>
+                <Link className="text-primary-orange text-xl">
+                  <BsArrowRight />
+                </Link>
+              </div>
+            </div>
+          ))}
         </div>
+        <div className="flex justify-center pt-8">
+          <button
+            onClick={() => setIsShowAllService(!isShowAllService)}
+            type="button"
+            className="text-lg text-primary-orange font-semibold py-4 px-7 border border-primary-orange rounded"
+          >
+            {isShowAllService ? "Show Less" : "More Services"}
+          </button>
+        </div>
+      </div>
+      <div className="info bg-dark-01 py-20 px-10 my-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 justify-center space-y-6">
+          <div className="open flex items-center gap-6">
+            <div className="icon">
+              <AiOutlineFieldTime className="text-white text-5xl" />
+            </div>
+            <div className="content">
+              <p className="text-white font-medium">
+                We are open saturday-friday
+              </p>
+              <p className="text-2xl font-bold text-white">7:00 am - 9:00 pm</p>
+            </div>
+          </div>
+          <div className="phone flex items-center gap-6">
+            <div className="icon">
+              <TbDeviceLandlinePhone className="text-white text-5xl" />
+            </div>
+            <div className="content">
+              <p className="text-white font-medium">Have a question?</p>
+              <p className="text-2xl font-bold text-white">+880 1641 819262</p>
+            </div>
+          </div>
+          <div className="location flex items-center gap-6">
+            <div className="icon">
+              <FaMapLocationDot className="text-white text-5xl" />
+            </div>
+            <div className="content">
+              <p className="text-white font-medium">Have a question?</p>
+              <p className="text-2xl font-bold text-white">+880 1641 819262</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="products py-12 space-y-4">
+        <h6 className="text-xl text-center font-bold text-primary-orange">
+          Popular Products
+        </h6>
+        <h1 className="text-5xl text-center font-bold text-dark-01">
+          Browse Our Products
+        </h1>
+        <p className="text-dark-03 w-3/4 lg:w-1/2 mx-auto text-center">
+          The majority have suffered alteration in some form, by injected
+          humour, or randomized words which {"don't"} look even slightly
+          believable.
+        </p>
+        <div className="product-container grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
+          {displayedProducts?.map((product) => (
+            <div className="p-6 rounded-xl shadow space-y-1" key={product._id}>
+              <img
+                className="w-full h-52 rounded-lg"
+                src={product.thumbnail}
+                alt={product.title}
+              />
+              <div className="rating flex justify-center pt-3">
+                <Rating rating={product.rating} />
+              </div>
+              <h2 className="text-2xl font-bold text-dark-02 text-center">
+                {product.title}
+              </h2>
+
+              <p className="text-xl font-semibold text-primary-orange text-center">
+                Price: ${((product.price * 100) / 100).toFixed(2)}
+              </p>
+            </div>
+          ))}
+        </div>
+        <div className="flex justify-center pt-8">
+          <button
+            onClick={() => setIsShowAllProducts(!isShowAllProducts)}
+            type="button"
+            className="text-lg text-primary-orange font-semibold py-4 px-7 border border-primary-orange rounded"
+          >
+            {isShowAllProducts ? "Show Less" : "More Products"}
+          </button>
+        </div>
+      </div>
+      <div className="team py-12 space-y-4">
+        <h6 className="text-xl text-center font-bold text-primary-orange">
+          Team
+        </h6>
+        <h1 className="text-5xl text-center font-bold text-dark-01">
+          Meet Our Team
+        </h1>
+        <p className="text-dark-03 w-3/4 lg:w-1/2 mx-auto text-center">
+          The majority have suffered alteration in some form, by injected
+          humour, or randomized words which {"don't"} look even slightly
+          believable.
+        </p>
+        
       </div>
     </div>
   );

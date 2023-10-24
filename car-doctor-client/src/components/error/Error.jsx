@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Error = () => {
   return (
-    <div className="w-full max-h-screen flex justify-center items-center">
+    <div className="w-full max-h-screen h-screen flex flex-col justify-center items-center">
       <Link to="/">
         <button
           type="button"
