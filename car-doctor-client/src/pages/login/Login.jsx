@@ -1,48 +1,85 @@
-import { Link } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaGoogle } from "react-icons/fa";
+import Navbar from "../../components/shared/Navbar";
+import { useContext } from "react";
+import { AuthContext } from "../../Contexts/AuthContextProvider";
+import Swal from "sweetalert2";
+import LoadingSpinner from "../../utils/LoadingSpinner/LoadingSpinner";
 
-function Login() {
-  // const location = useLocation();
-  // const navigate = useNavigate();
+const Login = () => {
+  const { LoginWithEmailPassword, SignInWithGoogle, loading, setLoading } =
+    useContext(AuthContext);
 
-  // const handleLoginClick = (e) => {
-  //   e.preventDefault();
-  //   const form = e.target;
-  //   const email = form.email.value;
-  //   const password = form.password.value;
-  //   loginWithEmailPassword(email, password)
-  //     .then((result) => {
-  //       console.log(result.user);
-  //       toast.success("User login successful");
-  //       navigate(location?.state ? location.state : "/");
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       toast.error(error?.message);
-  //     });
-  // };
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  // const handleGoogleLoginClick = () => {
-  //   loginWithGoogle()
-  //     .then((result) => {
-  //       navigate(location?.state ? location.state : "/");
-  //       console.log(result.user);
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //     });
-  // };
+  const handleLoginSubmit = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    LoginWithEmailPassword(email, password)
+      .then((result) => {
+        console.log(result?.user);
+
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Login Successful",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate(location?.state ? location.state : "/");
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          icon: "error",
+          text: err,
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const loginWithGoogle = () => {
+    SignInWithGoogle()
+      .then((response) => {
+        console.log(response.user);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Login Successful",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          icon: "error",
+          text: err,
+        });
+      });
+  };
 
   return (
     <div>
+      {loading && <LoadingSpinner />}
+      <Navbar />
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-              <h1 className="text-5xl font-bold text-center dark:text-white text-slate-700">
-                Login now!
+              <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
+                Sign in to your account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form
+                className="space-y-4 md:space-y-6"
+                onSubmit={handleLoginSubmit}
+              >
                 <div>
                   <label
                     htmlFor="email"
@@ -83,7 +120,6 @@ function Login() {
                         aria-describedby="remember"
                         type="checkbox"
                         className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                        required=""
                       />
                     </div>
                     <div className="ml-3 text-sm">
@@ -109,18 +145,26 @@ function Login() {
                   Sign in
                 </button>
                 <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                  {"Don’t"} have an account?{" "}
+                  {"Don’t"} have an account yet?{" "}
                   <Link
-                    className="font-medium text-sky-600 hover:underline dark:text-sky-500"
+                    className="text-sky-600 font-medium hover:text-sky-700 hover:underline"
                     to="/register"
                   >
                     Register
                   </Link>
                 </p>
               </form>
-              <div className="flex justify-center items-center gap-4 mt-6 w-full md:max-lg:w-1/2 mx-auto py-3 px-6 rounded-lg border-2 border-sky-700 cursor-pointer font-bold md:text-xl dark:text-slate-200 text-sky-600 hover:text-slate-200 hover:bg-sky-600 hover:border-transparent">
-                <FcGoogle className="text-2xl" />
-                <button className="text-lg">Login With Google</button>
+              <div className="google flex justify-center">
+                <button
+                  onClick={loginWithGoogle}
+                  type="button"
+                  className="flex justify-center items-center gap-2 border border-sky-500 py-2 px-6 rounded-lg text-sky-600 hover:text-slate-200 hover:bg-sky-600 hover:border-transparent"
+                >
+                  <span className="text-xl">
+                    <FaGoogle />
+                  </span>
+                  <span className="text-lg font-medium">Login with google</span>
+                </button>
               </div>
             </div>
           </div>
