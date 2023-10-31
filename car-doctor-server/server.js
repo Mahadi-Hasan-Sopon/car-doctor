@@ -1,13 +1,6 @@
 const express = require("express");
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
-<<<<<<< HEAD
-const jwt = require("jsonwebtoken");
-const cookieParser = require("cookie-parser");
-// const { services } = require("./services");
-// const { products } = require("./products");
-=======
->>>>>>> 33a24e3adf54d95422f739331cdc3bcb46285a3b
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 const jwt = require("jsonwebtoken");
@@ -21,17 +14,10 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(
   cors({
-<<<<<<< HEAD
-    origin: ["http://localhost:5173"],
-  })
-);
-
-=======
     origin: ["*", "http://localhost:5173"],
     credentials: true,
   })
 );
->>>>>>> 33a24e3adf54d95422f739331cdc3bcb46285a3b
 app.use((req, res, next) => {
   req.headers = {
     "access-control-allow-origin": "*",
@@ -75,10 +61,6 @@ async function run() {
       res.send(result);
     });
 
-<<<<<<< HEAD
-    app.post("/jwt", async (req, res) => {
-      const data = req.body;
-=======
     app.get("/services/service-details/:serviceId", async (req, res) => {
       const serviceId = req.params.serviceId;
       const query = { _id: new ObjectId(serviceId) };
@@ -102,7 +84,6 @@ async function run() {
           path: "/",
         })
         .send({ success: true });
->>>>>>> 33a24e3adf54d95422f739331cdc3bcb46285a3b
     });
 
     // Send a ping to confirm a successful connection
