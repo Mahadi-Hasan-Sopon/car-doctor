@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const cors = require("cors");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
@@ -61,13 +61,29 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/services/service-details/:serviceId", async (req, res) => {
+      const serviceId = req.params.serviceId;
+      const query = { _id: new ObjectId(serviceId) };
+      const result = await serviceCollection.findOne(query);
+      res.send(result);
+    });
+
     app.post("/jwt", async (req, res) => {
       const user = req.body;
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: "1hr",
       });
+
       console.log(token);
-      res.send({ token: token });
+
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: false,
+          sameSite: "none",
+          path: "/",
+        })
+        .send({ success: true });
     });
 
     // Send a ping to confirm a successful connection
