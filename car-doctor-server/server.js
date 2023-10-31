@@ -1,14 +1,22 @@
 const express = require("express");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const cors = require("cors");
-const { services } = require("./services");
-const { products } = require("./products");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
+// const { services } = require("./services");
+// const { products } = require("./products");
 require("dotenv").config();
 
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: ["http://localhost:5173"],
+  })
+);
+
 app.use((req, res, next) => {
   req.headers = {
     "access-control-allow-origin": "*",
@@ -50,6 +58,10 @@ async function run() {
     app.get("/products", async (req, res) => {
       const result = await productCollection.find().toArray();
       res.send(result);
+    });
+
+    app.post("/jwt", async (req, res) => {
+      const data = req.body;
     });
 
     // Send a ping to confirm a successful connection
