@@ -40,6 +40,9 @@ const Navlinks = ({ className }) => {
       <li>
         <SingleLink route={"/contact"}>Contact</SingleLink>
       </li>
+      <li>
+        <SingleLink route={"/login"}>Login</SingleLink>
+      </li>
     </ul>
   );
 };
