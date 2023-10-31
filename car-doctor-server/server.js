@@ -25,7 +25,7 @@ app.use((req, res, next) => {
   next();
 });
 
-const port = process.env.PORT || 5500;
+const port = process.env.PORT || 5000;
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.vdnpxvd.mongodb.net/?retryWrites=true&w=majority`;
 
