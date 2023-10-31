@@ -1,9 +1,66 @@
 import { Link } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
+import Navbar from "../../components/shared/Navbar";
+import { useContext } from "react";
+import { AuthContext } from "../../Contexts/AuthContextProvider";
+import Swal from "sweetalert2";
 
 const Login = () => {
+  const { LoginWithEmailPassword, SignInWithGoogle } = useContext(AuthContext);
+
+  const handleLoginSubmit = (event) => {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const email = form.email.value;
+    const password = form.password.value;
+
+    LoginWithEmailPassword(email, password)
+      .then((result) => {
+        console.log(result?.user);
+        if (result?.user) {
+          result.user.displayName = name;
+        }
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Login Successful",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          icon: "error",
+          text: err,
+        });
+      });
+  };
+
+  const loginWithGoogle = () => {
+    SignInWithGoogle()
+      .then((response) => {
+        console.log(response.user);
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: "Login Successful",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        Swal.fire({
+          icon: "error",
+          text: err,
+        });
+      });
+  };
+
   return (
     <div>
+      <Navbar />
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
@@ -11,7 +68,10 @@ const Login = () => {
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                 Sign in to your account
               </h1>
-              <form className="space-y-4 md:space-y-6" action="#">
+              <form
+                className="space-y-4 md:space-y-6"
+                onSubmit={handleLoginSubmit}
+              >
                 <div>
                   <label
                     htmlFor="email"
@@ -89,6 +149,7 @@ const Login = () => {
               </form>
               <div className="google flex justify-center">
                 <button
+                  onClick={loginWithGoogle}
                   type="button"
                   className="flex justify-center items-center gap-2 border border-sky-500 py-2 px-6 rounded-lg text-sky-600 hover:text-slate-200 hover:bg-sky-600 hover:border-transparent"
                 >
