@@ -79,11 +79,10 @@ async function run() {
       res
         .cookie("token", token, {
           httpOnly: true,
-          secure: false,
           sameSite: "none",
-          path: "/",
+          secure: true, //http://localhost:5173/
         })
-        .send({ success: true });
+        .send({ success: true, token: token });
     });
 
     // Send a ping to confirm a successful connection
