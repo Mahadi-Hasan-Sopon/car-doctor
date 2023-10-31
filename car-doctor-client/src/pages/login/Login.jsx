@@ -1,12 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import Navbar from "../../components/shared/Navbar";
 import { useContext } from "react";
 import { AuthContext } from "../../Contexts/AuthContextProvider";
 import Swal from "sweetalert2";
+import LoadingSpinner from "../../utils/LoadingSpinner/LoadingSpinner";
 
 const Login = () => {
-  const { LoginWithEmailPassword, SignInWithGoogle } = useContext(AuthContext);
+  const { LoginWithEmailPassword, SignInWithGoogle, loading, setLoading } =
+    useContext(AuthContext);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleLoginSubmit = (event) => {
     event.preventDefault();
@@ -17,9 +22,7 @@ const Login = () => {
     LoginWithEmailPassword(email, password)
       .then((result) => {
         console.log(result?.user);
-        if (result?.user) {
-          result.user.displayName = name;
-        }
+
         Swal.fire({
           position: "top-end",
           icon: "success",
@@ -27,6 +30,7 @@ const Login = () => {
           showConfirmButton: false,
           timer: 1500,
         });
+        navigate(location?.state ? location.state : "/");
       })
       .catch((err) => {
         console.log(err);
@@ -34,6 +38,9 @@ const Login = () => {
           icon: "error",
           text: err,
         });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -60,6 +67,7 @@ const Login = () => {
 
   return (
     <div>
+      {loading && <LoadingSpinner />}
       <Navbar />
       <section className="bg-gray-50 dark:bg-gray-900">
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -112,7 +120,6 @@ const Login = () => {
                         aria-describedby="remember"
                         type="checkbox"
                         className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                        required
                       />
                     </div>
                     <div className="ml-3 text-sm">

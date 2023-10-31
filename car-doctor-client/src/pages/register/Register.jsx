@@ -1,5 +1,5 @@
 import { FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../components/shared/Navbar";
 import { useContext } from "react";
 import { AuthContext } from "../../Contexts/AuthContextProvider";
@@ -8,6 +8,9 @@ import Swal from "sweetalert2";
 const Register = () => {
   const { RegisterWithEmailPassword, SignInWithGoogle, updateProfileInfo } =
     useContext(AuthContext);
+
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const handleRegisterSubmit = (event) => {
     event.preventDefault();
@@ -40,13 +43,14 @@ const Register = () => {
         if (result?.user) {
           updateProfileInfo(result.user, name);
         }
-
         Swal.fire({
           position: "top-end",
           icon: "success",
           title: "Registration Successful",
           showConfirmButton: false,
           timer: 1500,
+        }).then(() => {
+          navigate(location?.state ? location.state : "/");
         });
       })
       .catch((err) => {

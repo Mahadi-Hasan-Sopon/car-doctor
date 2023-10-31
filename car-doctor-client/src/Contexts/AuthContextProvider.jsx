@@ -7,6 +7,7 @@ import {
   onAuthStateChanged,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut,
   updateProfile,
 } from "firebase/auth";
 
@@ -18,10 +19,10 @@ function AuthContextProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    const unSubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      console.log(currentUser);
-      setUser(currentUser);
+    const unSubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        setUser(currentUser);
+      }
       setLoading(false);
     });
 
@@ -49,13 +50,20 @@ function AuthContextProvider({ children }) {
     return signInWithPopup(auth, googleProvider);
   };
 
+  const LogOutUser = () => {
+    setLoading(true);
+    return signOut(auth);
+  };
+
   const authInfo = {
     RegisterWithEmailPassword,
     LoginWithEmailPassword,
     SignInWithGoogle,
     updateProfileInfo,
+    LogOutUser,
     user,
     loading,
+    setLoading,
   };
 
   return (

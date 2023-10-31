@@ -3,7 +3,10 @@ import { NavLink } from "react-router-dom";
 import Logo from "../../assets/logo.svg";
 import { BsHandbag, BsSearch } from "react-icons/bs";
 import { AiOutlineBars, AiOutlineClose } from "react-icons/ai";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../../Contexts/AuthContextProvider";
+import LoadingSpinner from "../../utils/LoadingSpinner/LoadingSpinner";
+import { FaUser } from "react-icons/fa";
 
 const SingleLink = ({ route, children }) => {
   return (
@@ -22,7 +25,7 @@ const SingleLink = ({ route, children }) => {
   );
 };
 
-const Navlinks = ({ className }) => {
+const Navlinks = ({ user, LogOutUser, className }) => {
   return (
     <ul className={className}>
       <li>
@@ -41,14 +44,29 @@ const Navlinks = ({ className }) => {
         <SingleLink route={"/contact"}>Contact</SingleLink>
       </li>
       <li>
-        <SingleLink route={"/login"}>Login</SingleLink>
+        {user ? (
+          <button
+            className="text-lg text-dark-02 font-semibold border border-orange-700 py-1 px-3 rounded hover:text-orange-600"
+            type="button"
+            onClick={() => LogOutUser()}
+          >
+            LogOut
+          </button>
+        ) : (
+          <SingleLink route={"/login"}>Login</SingleLink>
+        )}
       </li>
     </ul>
   );
 };
 
 const Navbar = () => {
+  const { user, loading, LogOutUser } = useContext(AuthContext);
   const [toggle, setToggle] = useState(false);
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className="flex md:justify-between gap-6 items-center py-10">
@@ -75,24 +93,53 @@ const Navbar = () => {
           } bg-slate-100 absolute top-12 -left-14 my-2 min-w-[250px] rounded-xl sidebar`}
         >
           <Navlinks
+            user={user}
+            LogOutUser={LogOutUser}
             className={
               "flex flex-col gap-6 items-start justify-center py-6 px-10 transition-all duration-500"
             }
           />
         </div>
         <Navlinks
+          user={user}
+          LogOutUser={LogOutUser}
           className={"hidden md:flex gap-6 items-center justify-center"}
         />
       </div>
       <div className="right flex items-center gap-6 justify-between">
-        <BsHandbag className="text-dark-02 text-2xl" />
-        <BsSearch className="text-dark-02 text-2xl" />
-        <button
-          type="button"
-          className="text-lg font-semibold py-2 md:py-5 px-5 md:px-7 border border-[#ff3811] text-[#ff3811] rounded-md"
-        >
-          Appointment
-        </button>
+        {user ? (
+          <>
+            <div className="avatar flex flex-col items-center">
+              <>
+                {user?.photoURL ? (
+                  <img
+                    className="border rounded-full border-sky-600 w-14 h-14"
+                    src={user.photoURL}
+                    alt=""
+                  />
+                ) : (
+                  <div className="border border-slate-900 p-2 rounded-full">
+                    <FaUser className="text-2xl" />
+                  </div>
+                )}
+              </>
+              <h2 className="text-lg font-semibold text-slate-700">
+                {user.displayName}
+              </h2>
+            </div>
+          </>
+        ) : (
+          <>
+            <BsHandbag className="text-dark-02 text-2xl" />
+            <BsSearch className="text-dark-02 text-2xl" />
+            <button
+              type="button"
+              className="text-lg font-semibold py-2 md:py-5 px-5 md:px-7 border border-[#ff3811] text-[#ff3811] rounded-md"
+            >
+              Appointment
+            </button>
+          </>
+        )}
       </div>
     </div>
   );
