@@ -1,9 +1,12 @@
 const express = require("express");
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const cors = require("cors");
-const { services } = require("./services");
-const { products } = require("./products");
 require("dotenv").config();
+const cookieParser = require("cookie-parser");
+const jwt = require("jsonwebtoken");
+
+// const { services } = require("./services");
+// const { products } = require("./products");
 
 const app = express();
 
@@ -50,6 +53,15 @@ async function run() {
     app.get("/products", async (req, res) => {
       const result = await productCollection.find().toArray();
       res.send(result);
+    });
+
+    app.post("/jwt", async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
+        expiresIn: "1hr",
+      });
+      console.log(token);
+      res.send({ token: token });
     });
 
     // Send a ping to confirm a successful connection
