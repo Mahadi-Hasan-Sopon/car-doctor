@@ -217,20 +217,27 @@ function Home() {
         </p>
         <div className="service-container grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
           {displayedServices?.map((service) => (
-            <div className="p-6 rounded-xl shadow" key={service._id}>
+            <div
+              className="p-6 rounded-xl shadow flex flex-col justify-center"
+              key={service._id}
+            >
               <img
                 className="w-full h-52 rounded-lg"
                 src={service.thumbnail}
                 alt={service.title}
               />
-              <h2 className="text-2xl font-bold text-dark-02">
+              <h2 className="text-2xl font-bold text-dark-02 py-2">
                 {service.title}
               </h2>
+              <div className="flex-grow"></div>
               <div className="flex items-center justify-between">
                 <p className="text-xl font-semibold text-primary-orange">
                   Price: ${((service.price * 100) / 100).toFixed(2)}
                 </p>
-                <Link className="text-primary-orange text-xl">
+                <Link
+                  className="text-primary-orange text-xl"
+                  to={`/services/service-details/${service._id}`}
+                >
                   <BsArrowRight />
                 </Link>
               </div>
@@ -294,7 +301,10 @@ function Home() {
         </p>
         <div className="product-container grid md:grid-cols-2 lg:grid-cols-3 gap-6 my-10">
           {displayedProducts?.map((product) => (
-            <div className="p-6 rounded-xl shadow space-y-1" key={product._id}>
+            <div
+              className="p-6 rounded-xl shadow space-y-1 flex flex-col"
+              key={product._id}
+            >
               <img
                 className="w-full h-52 rounded-lg"
                 src={product.thumbnail}
@@ -306,10 +316,18 @@ function Home() {
               <h2 className="text-2xl font-bold text-dark-02 text-center">
                 {product.title}
               </h2>
-
-              <p className="text-xl font-semibold text-primary-orange text-center">
-                Price: ${((product.price * 100) / 100).toFixed(2)}
-              </p>
+              <div className="flex-grow"></div>
+              <div className="flex items-center justify-around gap-4">
+                <p className="text-xl font-semibold text-primary-orange">
+                  Price: ${((product.price * 100) / 100).toFixed(2)}
+                </p>
+                <Link
+                  className="text-primary-orange text-xl"
+                  to={`/products/product-details/${product._id}`}
+                >
+                  <BsArrowRight />
+                </Link>
+              </div>
             </div>
           ))}
         </div>
@@ -335,7 +353,6 @@ function Home() {
           humour, or randomized words which {"don't"} look even slightly
           believable.
         </p>
-        
       </div>
     </div>
   );

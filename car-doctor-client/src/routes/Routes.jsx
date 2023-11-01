@@ -11,6 +11,7 @@ import Cart from "../pages/cart/Cart";
 import Services from "../pages/services/Services";
 import ServiceDetails from "../pages/serviceDetails/ServiceDetails";
 import ProductDetails from "../pages/productDetails/ProductDetails";
+import PrivateRoutes from "./PrivateRoutes";
 
 const routes = createBrowserRouter([
   {
@@ -28,7 +29,11 @@ const routes = createBrowserRouter([
       { path: "/cart", element: <Cart /> },
       {
         path: "/services/service-details/:serviceId",
-        element: <ServiceDetails />,
+        element: (
+          <PrivateRoutes>
+            <ServiceDetails />
+          </PrivateRoutes>
+        ),
       },
       {
         path: "/products/product-details/:productId",
