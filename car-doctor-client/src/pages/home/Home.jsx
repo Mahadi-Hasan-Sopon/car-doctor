@@ -1,5 +1,4 @@
 import { Carousel } from "react-responsive-carousel";
-import Navbar from "../../components/shared/Navbar";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { useQuery } from "@tanstack/react-query";
 import "./Home.css";
@@ -55,7 +54,6 @@ function Home() {
 
   return (
     <div>
-      <Navbar />
       <div className="banner min-h-[600px]">
         <Carousel
           autoPlay
@@ -244,7 +242,7 @@ function Home() {
             </div>
           ))}
         </div>
-        <div className="flex justify-center pt-8">
+        <div className="show-all-button flex justify-center pt-8">
           <button
             onClick={() => setIsShowAllService(!isShowAllService)}
             type="button"

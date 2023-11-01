@@ -5,7 +5,7 @@ const getServices = async () => {
   return result.data;
 };
 
-const getServicesById = async (serviceId) => {
+const getServiceById = async (serviceId) => {
   const result = await axios.get(
     `http://localhost:5000/services/${serviceId}`,
     { withCredentials: true }
@@ -18,7 +18,7 @@ const getProducts = async () => {
   return result.data;
 };
 
-const getProductsById = async (serviceId) => {
+const getProductById = async (serviceId) => {
   const result = await axios.get(
     `http://localhost:5000/products/${serviceId}`,
     { withCredentials: true }
@@ -26,4 +26,4 @@ const getProductsById = async (serviceId) => {
   return result.data;
 };
 
-export { getServices, getServicesById, getProducts, getProductsById };
+export { getServices, getServiceById, getProducts, getProductById };

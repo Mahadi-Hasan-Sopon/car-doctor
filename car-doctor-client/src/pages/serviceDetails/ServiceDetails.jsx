@@ -1,13 +1,21 @@
+import { useQuery } from "@tanstack/react-query";
 import { BsArrowLeft } from "react-icons/bs";
-import Navbar from "../../components/shared/Navbar";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { getServiceById } from "../../API/API";
 
 const ServiceDetails = () => {
   const navigate = useNavigate();
+  const { serviceId } = useParams();
+
+  const { data: service } = useQuery({
+    queryKey: ["service", serviceId],
+    queryFn: getServiceById(serviceId),
+  });
+
+  console.log(service);
 
   return (
     <div>
-      <Navbar />
       <div className="back">
         <button
           onClick={() => navigate("/")}

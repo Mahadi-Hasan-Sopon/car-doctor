@@ -1,6 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
-import Navbar from "../../components/shared/Navbar";
 import { useContext } from "react";
 import { AuthContext } from "../../Contexts/AuthContextProvider";
 import Swal from "sweetalert2";
@@ -68,9 +67,9 @@ const Login = () => {
   return (
     <div>
       {loading && <LoadingSpinner />}
-      <Navbar />
+
       <section className="bg-gray-50 dark:bg-gray-900">
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
+        <div className="flex flex-col items-center justify-center px-6 py-8 md:py-3 mx-auto md:h-[80vh] lg:py-0">
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
