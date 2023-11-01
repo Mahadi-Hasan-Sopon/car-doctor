@@ -30,7 +30,6 @@ app.use((req, res, next) => {
 // Custom Middlewares
 const logger = async (req, res, next) => {
   console.log("logger Url: ", req.protocol, req.originalUrl);
-  console.log("Cookie : ", req.cookies);
   next();
 };
 
@@ -43,6 +42,11 @@ const verifyToken = async (req, res, next) => {
       if (err) return res.status(401).json({ message: "Invalid Credentials" });
       // if decoded token is valid
       console.log(decoded);
+      if (decoded) {
+        console.log("decoded successfully");
+      } else {
+        console.log("decoded failed");
+      }
       next();
     });
   }
@@ -52,8 +56,10 @@ const port = process.env.PORT || 5000;
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.vdnpxvd.mongodb.net/?retryWrites=true&w=majority`;
 
+const localUri = "mongodb://127.0.0.1:27017";
+
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(uri, {
+const client = new MongoClient(localUri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -84,14 +90,14 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/services/:serviceId", logger, verifyToken, async (req, res) => {
+    app.get("/services/:serviceId", verifyToken, async (req, res) => {
       const serviceId = req.params.serviceId;
       const query = { _id: new ObjectId(serviceId) };
       const result = await serviceCollection.findOne(query);
       res.send(result);
     });
 
-    app.get("/products/:productId", async (req, res) => {
+    app.get("/products/:productId", verifyToken, async (req, res) => {
       const productId = req.params.productId;
       const query = { _id: new ObjectId(productId) };
       const product = await productCollection.findOne(query);
@@ -100,26 +106,26 @@ async function run() {
 
     app.post("/jwt", async (req, res) => {
       const user = req.body;
+      console.log("user in /jwt ", user);
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: "1hr",
       });
 
-      // console.log(token);
+      // console.log("token", token);
 
       res
         .cookie("token", token, {
           httpOnly: true,
           sameSite: "none",
-          secure: true, //http://localhost:5173/
+          secure: true,
+          domain: "localhost",
         })
         .send({ success: true, token: token });
     });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
-    console.log(
-      "Pinged your deployment. You successfully connected to MongoDB!"
-    );
+    console.log("You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
