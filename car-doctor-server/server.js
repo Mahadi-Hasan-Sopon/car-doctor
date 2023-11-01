@@ -62,11 +62,18 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/services/service-details/:serviceId", async (req, res) => {
+    app.get("/services/:serviceId", async (req, res) => {
       const serviceId = req.params.serviceId;
       const query = { _id: new ObjectId(serviceId) };
       const result = await serviceCollection.findOne(query);
       res.send(result);
+    });
+
+    app.get("/products/:productId", async (req, res) => {
+      const productId = req.params.productId;
+      const query = { _id: new ObjectId(productId) };
+      const product = await productCollection.findOne(query);
+      res.send(product);
     });
 
     app.post("/jwt", async (req, res) => {
