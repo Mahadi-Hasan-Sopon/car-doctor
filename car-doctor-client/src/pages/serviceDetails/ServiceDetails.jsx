@@ -9,10 +9,10 @@ const ServiceDetails = () => {
 
   const { data: service } = useQuery({
     queryKey: ["service", serviceId],
-    queryFn: getServiceById(serviceId),
+    queryFn: () => getServiceById(serviceId),
   });
 
-  console.log(service);
+  const { title, thumbnail, price, description } = service || {};
 
   return (
     <div>
@@ -28,7 +28,27 @@ const ServiceDetails = () => {
           <span>Go Back</span>
         </button>
       </div>
-      <h1 className="text-2xl font-bold text-center">Service Details Page</h1>
+      <h1 className="text-4xl font-bold text-center">Service Details</h1>
+      <div className="grid grid-cols-3 gap-5 my-10">
+        <div className="service-details col-span-2">
+          <img className="rounded-xl" src={thumbnail} alt={title} />
+          <h2 className="text-3xl font-bold text-dark-01 my-4"> {title} </h2>
+          <p className="text-base font-normal text-dark-03"> {description} </p>
+        </div>
+        <div className="right-side">
+          <h3 className="text-3xl font-bold text-dark-01">{`Price $${
+            price && price?.toFixed(2)
+          }`}</h3>
+          <div className="proceed mt-10">
+            <button
+              type="button"
+              className="text-center w-full rounded-lg bg-primary-orange font-semibold text-lg py-4 text-white"
+            >
+              Proceed Checkout
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

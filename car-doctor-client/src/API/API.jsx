@@ -18,9 +18,9 @@ const getProducts = async () => {
   return result.data;
 };
 
-const getProductById = async (serviceId) => {
+const getProductById = async (productId) => {
   const result = await axios.get(
-    `http://localhost:5000/products/${serviceId}`,
+    `http://localhost:5000/products/${productId}`,
     { withCredentials: true }
   );
   return result.data;

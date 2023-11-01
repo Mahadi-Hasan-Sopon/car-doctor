@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { RouterProvider } from "react-router-dom";
 import routes from "./routes/Routes.jsx";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import "./index.css";
@@ -14,6 +15,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <AuthContextProvider>
       <QueryClientProvider client={queryClient}>
         <RouterProvider router={routes} />
+        <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </AuthContextProvider>
   </React.StrictMode>
