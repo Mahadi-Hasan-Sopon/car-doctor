@@ -2,20 +2,29 @@ import { useQuery } from "@tanstack/react-query";
 import { BsArrowLeft } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { getServiceById } from "../../API/API";
+import Error from "../../components/error/Error";
+import LoadingSpinner from "../../utils/LoadingSpinner/LoadingSpinner";
 
 const ServiceDetails = () => {
   const navigate = useNavigate();
   const { serviceId } = useParams();
 
-  const { data: service } = useQuery({
+  const {
+    data: service,
+    isError,
+    isFetching,
+  } = useQuery({
     queryKey: ["service", serviceId],
     queryFn: () => getServiceById(serviceId),
   });
+
+  if (isError) return <Error />;
 
   const { title, thumbnail, price, description } = service || {};
 
   return (
     <div>
+      {isFetching && <LoadingSpinner />}
       <div className="back">
         <button
           onClick={() => navigate("/")}

@@ -2,20 +2,31 @@ import { useQuery } from "@tanstack/react-query";
 import { BsArrowLeft } from "react-icons/bs";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProductById } from "../../API/API";
+import LoadingSpinner from "../../utils/LoadingSpinner/LoadingSpinner";
+import Error from "../../components/error/Error";
 
 const ProductDetails = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
 
-  const { data: product } = useQuery({
+  const {
+    data: product,
+    isError,
+    isFetching,
+  } = useQuery({
     queryKey: ["product", productId],
     queryFn: () => getProductById(productId),
   });
+
+  if (isError) {
+    return <Error />;
+  }
 
   const { title, thumbnail, price, description } = product || {};
 
   return (
     <div>
+      {isFetching && <LoadingSpinner />}
       <div className="back">
         <button
           onClick={() => navigate("/")}
@@ -36,7 +47,7 @@ const ProductDetails = () => {
             src={thumbnail}
             alt={title}
           />
-          <h2 className="text-3xl font-bold text-dark-01 my-4"> {title} </h2>
+          <h2 className="text-3xl font-bold text-dark-01 my-4">{title}</h2>
           <p className="text-base font-normal text-dark-03"> {description} </p>
         </div>
         <div className="right-side">
