@@ -10,6 +10,7 @@ const jwt = require("jsonwebtoken");
 
 const app = express();
 
+// Middlewares
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -25,6 +26,27 @@ app.use((req, res, next) => {
   };
   next();
 });
+
+// Custom Middlewares
+const logger = async (req, res, next) => {
+  console.log("logger Url: ", req.protocol, req.originalUrl);
+  console.log("Cookie : ", req.cookies);
+  next();
+};
+
+const verifyToken = async (req, res, next) => {
+  const token = req.cookies?.token;
+  if (!token) return res.status(401).send({ message: "Un Authorized Access" });
+
+  if (token) {
+    jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
+      if (err) return res.status(401).json({ message: "Invalid Credentials" });
+      // if decoded token is valid
+      console.log(decoded);
+      next();
+    });
+  }
+};
 
 const port = process.env.PORT || 5000;
 
@@ -62,7 +84,7 @@ async function run() {
       res.send(result);
     });
 
-    app.get("/services/:serviceId", async (req, res) => {
+    app.get("/services/:serviceId", logger, verifyToken, async (req, res) => {
       const serviceId = req.params.serviceId;
       const query = { _id: new ObjectId(serviceId) };
       const result = await serviceCollection.findOne(query);
@@ -82,7 +104,7 @@ async function run() {
         expiresIn: "1hr",
       });
 
-      console.log(token);
+      // console.log(token);
 
       res
         .cookie("token", token, {
