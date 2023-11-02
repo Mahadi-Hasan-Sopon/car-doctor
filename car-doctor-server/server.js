@@ -56,10 +56,10 @@ const port = process.env.PORT || 5000;
 
 const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.vdnpxvd.mongodb.net/?retryWrites=true&w=majority`;
 
-const localUri = "mongodb://127.0.0.1:27017";
+// const localUri = "mongodb://127.0.0.1:27017";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-const client = new MongoClient(localUri, {
+const client = new MongoClient(uri, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -72,14 +72,20 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const serviceCollection = client.db("carDoctor").collection("services");
+    const database = client.db("carDoctor");
+
+    const serviceCollection = database.collection("services");
     // const serviceData = await serviceCollection.insertMany(services);
     // console.log(serviceData);
 
-    const productCollection = client.db("carDoctor").collection("products");
+    const productCollection = database.collection("products");
     // const productData = await productCollection.insertMany(products);
     // console.log(productData);
 
+    const checkoutCollection = database.collection("checkouts");
+    const cartCollection = database.collection("cartItems");
+
+    // Routes
     app.get("/services", async (req, res) => {
       const result = await serviceCollection.find().toArray();
       res.send(result);
@@ -110,9 +116,6 @@ async function run() {
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: "1hr",
       });
-
-      // console.log("token", token);
-
       res
         .cookie("token", token, {
           httpOnly: true,
@@ -121,6 +124,24 @@ async function run() {
           domain: "localhost",
         })
         .send({ success: true, token: token });
+    });
+
+    app.get("/checkout", verifyToken, async (req, res) => {
+      const email = req.query?.email;
+
+      // db.inventory.find( { "item.name": { $eq: "ab" } } )
+      const query = { "checkoutUserDetails.emailAddress": { $eq: email } };
+      const options = {
+        projection: { _id: 0, serviceId: 1 },
+      };
+      const result = await checkoutCollection.find(query, options).toArray();
+      res.send(result);
+    });
+
+    app.post("/checkout", verifyToken, async (req, res) => {
+      const checkoutDetails = req.body;
+      const result = await checkoutCollection.insertOne(checkoutDetails);
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection
