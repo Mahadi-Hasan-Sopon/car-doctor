@@ -1,8 +1,12 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import GoBack from "../../utils/BackButton/GoBack";
+import Swal from "sweetalert2";
+import axios from "axios";
 
 function Checkout() {
   const { serviceId } = useParams();
+  // eslint-disable-next-line no-unused-vars
+  const navigate = useNavigate();
 
   const handleCheckout = (e) => {
     e.preventDefault();
@@ -12,6 +16,31 @@ function Checkout() {
     const phoneNumber = form.phone_number.value;
     const emailAddress = form.email_address.value;
     const message = form.message.value;
+
+    if (!emailAddress || !phoneNumber) {
+      return Swal.fire({
+        icon: "error",
+        title: "Info Missing",
+        text: "Please provide valid Information",
+      });
+    }
+
+    if (!/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(emailAddress)) {
+      return Swal.fire({
+        icon: "error",
+        title: "Invalid Email",
+        text: "Please provide valid email",
+      });
+    }
+
+    if (phoneNumber.length < 11) {
+      return Swal.fire({
+        icon: "error",
+        title: "Invalid Phone Number",
+        text: "Please provide valid Number",
+      });
+    }
+
     const checkoutUserDetails = {
       firstName,
       lastName,
@@ -19,7 +48,29 @@ function Checkout() {
       emailAddress,
       message,
     };
-    console.log(serviceId, checkoutUserDetails);
+
+    const cartInfo = { serviceId, checkoutUserDetails };
+    console.log(cartInfo);
+    axios
+      .post("/cart", cartInfo, { withCredentials: true })
+      .then((res) => {
+        console.log(res.data);
+        Swal.fire({
+          icon: "success",
+          title: "Checkout Successful",
+          text: "Visit Cart to see details.",
+        });
+      })
+      .catch((err) => {
+        console.error(err);
+        Swal.fire({
+          icon: "error",
+          title: "Check Out Failed",
+          text: err.message,
+        });
+      });
+
+    // navigate("/cart");
   };
 
   return (
