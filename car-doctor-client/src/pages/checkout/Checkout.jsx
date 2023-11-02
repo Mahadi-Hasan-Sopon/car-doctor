@@ -1,19 +1,22 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import GoBack from "../../utils/BackButton/GoBack";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useContext } from "react";
+import { AuthContext } from "../../Contexts/AuthContextProvider";
 
 function Checkout() {
-  const { serviceId } = useParams();
+  const service = useLoaderData();
+  const { user } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const handleCheckout = (e) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const firstName = form.first_name.value;
-    const lastName = form.last_name.value;
-    const phoneNumber = form.phone_number.value;
+    const fullName = form.full_name.value;
     const emailAddress = form.email_address.value;
+    const phoneNumber = form.phone_number.value;
+    const price = form.price.value;
     const message = form.message.value;
 
     if (!emailAddress || !phoneNumber) {
@@ -41,17 +44,17 @@ function Checkout() {
     }
 
     const checkoutUserDetails = {
-      firstName,
-      lastName,
-      phoneNumber,
+      fullName,
       emailAddress,
+      phoneNumber,
+      price,
       message,
     };
-
-    const cartInfo = { serviceId, checkoutUserDetails };
-    console.log(cartInfo);
+    const checkoutInfo = { serviceId: service._id, checkoutUserDetails };
     axios
-      .post("http://localhost:5000/cart", cartInfo, { withCredentials: true })
+      .post("http://localhost:5000/checkout", checkoutInfo, {
+        withCredentials: true,
+      })
       .then((res) => {
         console.log(res.data);
         Swal.fire({
@@ -69,7 +72,7 @@ function Checkout() {
         });
       });
 
-    navigate("/cart");
+    navigate("/");
   };
 
   return (
@@ -81,34 +84,36 @@ function Checkout() {
           <div className="grid md:grid-cols-2 md:gap-6">
             <div className="relative z-0 w-full mb-6 group">
               <input
-                name="first_name"
+                name="full_name"
                 type="text"
-                id="floating_first_name"
+                id="floating_full_name"
                 className="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                 placeholder=" "
                 required
               />
               <label
-                htmlFor="floating_first_name"
+                htmlFor="floating_full_name"
                 className="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
-                First name
+                Full name
               </label>
             </div>
             <div className="relative z-0 w-full mb-6 group">
               <input
-                name="last_name"
-                type="text"
-                id="floating_last_name"
+                name="email_address"
+                defaultValue={user?.email}
+                type="email"
+                id="floating_email"
                 className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
+                placeholder="test@email.com"
                 required
+                readOnly
               />
               <label
-                htmlFor="floating_last_name"
+                htmlFor="floating_email"
                 className="peer-focus:font-medium absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
-                Last name
+                Email address
               </label>
             </div>
           </div>
@@ -131,18 +136,18 @@ function Checkout() {
             </div>
             <div className="relative z-0 w-full mb-6 group">
               <input
-                name="email_address"
-                type="email"
-                id="floating_email"
+                name="price"
+                defaultValue={`$${service?.price?.toFixed(2)}`}
+                type="text"
+                id="price"
                 className="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                placeholder=" "
-                required
+                readOnly
               />
               <label
-                htmlFor="floating_email"
+                htmlFor="price"
                 className="peer-focus:font-medium absolute text-base text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:left-0 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
               >
-                Email address
+                Price
               </label>
             </div>
           </div>

@@ -22,7 +22,7 @@ const ProductDetails = () => {
     return <Error />;
   }
 
-  const { title, thumbnail, price, description } = product || {};
+  const { _id, title, thumbnail, price, description } = product || {};
 
   return (
     <div>
@@ -56,7 +56,7 @@ const ProductDetails = () => {
           </h3>
           <div className="proceed mt-10">
             <Link
-              to={"/checkout"}
+              to={`/checkout/product/${_id}`}
               type="button"
               className="text-center w-full rounded-lg bg-primary-orange font-semibold text-lg py-4 text-white"
             >

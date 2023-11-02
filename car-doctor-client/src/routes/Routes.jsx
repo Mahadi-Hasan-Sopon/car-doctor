@@ -28,7 +28,22 @@ const routes = createBrowserRouter([
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
       { path: "/cart", element: <Cart /> },
-      { path: "/checkout/:serviceId", element: <Checkout /> },
+      {
+        path: "/checkout/service/:serviceId",
+        element: <Checkout />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/services/${params.serviceId}`, {
+            credentials: "include",
+          }),
+      },
+      {
+        path: "/checkout/product/:serviceId",
+        element: <Checkout />,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/products/${params.serviceId}`, {
+            credentials: "include",
+          }),
+      },
       {
         path: "/services/service-details/:serviceId",
         element: (

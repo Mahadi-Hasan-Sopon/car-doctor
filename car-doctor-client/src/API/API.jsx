@@ -26,4 +26,18 @@ const getProductById = async (productId) => {
   return result.data;
 };
 
-export { getServices, getServiceById, getProducts, getProductById };
+const getCheckouts = async (email) => {
+  const result = await axios.get(
+    `http://localhost:5000/checkout?email=${email}`,
+    { withCredentials: true }
+  );
+  return result.data;
+};
+
+export {
+  getServices,
+  getServiceById,
+  getProducts,
+  getProductById,
+  getCheckouts,
+};

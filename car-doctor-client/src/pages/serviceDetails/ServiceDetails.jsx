@@ -38,7 +38,7 @@ const ServiceDetails = () => {
           }`}</h3>
           <div className="proceed mt-10">
             <Link
-              to={`/checkout/${_id}`}
+              to={`/checkout/service/${_id}`}
               type="button"
               className="text-center w-full rounded-lg bg-primary-orange font-semibold text-lg py-4 text-white"
             >
