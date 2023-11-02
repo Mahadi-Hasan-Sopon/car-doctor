@@ -5,7 +5,6 @@ import axios from "axios";
 
 function Checkout() {
   const { serviceId } = useParams();
-  // eslint-disable-next-line no-unused-vars
   const navigate = useNavigate();
 
   const handleCheckout = (e) => {
@@ -52,7 +51,7 @@ function Checkout() {
     const cartInfo = { serviceId, checkoutUserDetails };
     console.log(cartInfo);
     axios
-      .post("/cart", cartInfo, { withCredentials: true })
+      .post("http://localhost:5000/cart", cartInfo, { withCredentials: true })
       .then((res) => {
         console.log(res.data);
         Swal.fire({
@@ -70,7 +69,7 @@ function Checkout() {
         });
       });
 
-    // navigate("/cart");
+    navigate("/cart");
   };
 
   return (
