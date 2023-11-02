@@ -2,7 +2,7 @@ import { FaGoogle } from "react-icons/fa";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Navbar from "../../components/shared/Navbar";
 import { useContext } from "react";
-import { AuthContext } from "../../Contexts/AuthContextProvider";
+import { AuthContext } from "../../contexts/AuthContextProvider";
 import Swal from "sweetalert2";
 
 const Register = () => {

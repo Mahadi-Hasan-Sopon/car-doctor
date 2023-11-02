@@ -1,7 +1,7 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaGoogle } from "react-icons/fa";
 import { useContext } from "react";
-import { AuthContext } from "../../Contexts/AuthContextProvider";
+import { AuthContext } from "../../contexts/AuthContextProvider";
 import Swal from "sweetalert2";
 import LoadingSpinner from "../../utils/LoadingSpinner/LoadingSpinner";
 

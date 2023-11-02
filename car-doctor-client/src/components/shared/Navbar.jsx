@@ -4,9 +4,9 @@ import Logo from "../../assets/logo.svg";
 import { BsHandbag, BsSearch } from "react-icons/bs";
 import { AiOutlineBars, AiOutlineClose } from "react-icons/ai";
 import { useContext, useState } from "react";
-import { AuthContext } from "../../Contexts/AuthContextProvider";
 import LoadingSpinner from "../../utils/LoadingSpinner/LoadingSpinner";
 import { FaUser } from "react-icons/fa";
+import { AuthContext } from "../../contexts/AuthContextProvider";
 
 const SingleLink = ({ route, children }) => {
   return (

@@ -26,18 +26,9 @@ const getProductById = async (productId) => {
   return result.data;
 };
 
-const getCheckouts = async (email) => {
+const getCartItems = async (email) => {
   const result = await axios.get(
-    `http://localhost:5000/checkout?email=${email}`,
-    { withCredentials: true }
-  );
-  return result.data;
-};
-
-const getCartServices = async (servicesId) => {
-  const result = await axios.post(
-    "http://localhost:5000/cartItems",
-    servicesId,
+    `http://localhost:5000/cart?email=${email}`,
     { withCredentials: true }
   );
   return result.data;
@@ -48,6 +39,5 @@ export {
   getServiceById,
   getProducts,
   getProductById,
-  getCheckouts,
-  getCartServices,
+  getCartItems,
 };

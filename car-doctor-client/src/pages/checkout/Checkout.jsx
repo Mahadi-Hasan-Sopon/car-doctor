@@ -3,7 +3,7 @@ import GoBack from "../../utils/BackButton/GoBack";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useContext } from "react";
-import { AuthContext } from "../../Contexts/AuthContextProvider";
+import { AuthContext } from "../../contexts/AuthContextProvider";
 import { useQueryClient } from "@tanstack/react-query";
 
 function Checkout() {
@@ -52,9 +52,9 @@ function Checkout() {
       price,
       message,
     };
-    const checkoutInfo = { serviceId: service._id, checkoutUserDetails };
+    const checkoutInfo = { service, checkoutUserDetails };
     axios
-      .post("http://localhost:5000/checkout", checkoutInfo, {
+      .post("http://localhost:5000/cart", checkoutInfo, {
         withCredentials: true,
       })
       .then((res) => {
@@ -63,6 +63,7 @@ function Checkout() {
           icon: "success",
           title: "Checkout Successful",
           text: "Visit Cart to see details.",
+          timer: 1500,
         });
         queryClient.invalidateQueries(["checkouts", "cartServices"]);
       })
