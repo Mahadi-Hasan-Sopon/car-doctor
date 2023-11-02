@@ -34,10 +34,20 @@ const getCheckouts = async (email) => {
   return result.data;
 };
 
+const getCartServices = async (servicesId) => {
+  const result = await axios.post(
+    "http://localhost:5000/cartItems",
+    servicesId,
+    { withCredentials: true }
+  );
+  return result.data;
+};
+
 export {
   getServices,
   getServiceById,
   getProducts,
   getProductById,
   getCheckouts,
+  getCartServices,
 };

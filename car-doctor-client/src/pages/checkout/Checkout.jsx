@@ -4,11 +4,13 @@ import Swal from "sweetalert2";
 import axios from "axios";
 import { useContext } from "react";
 import { AuthContext } from "../../Contexts/AuthContextProvider";
+import { useQueryClient } from "@tanstack/react-query";
 
 function Checkout() {
   const service = useLoaderData();
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
 
   const handleCheckout = (e) => {
     e.preventDefault();
@@ -62,6 +64,7 @@ function Checkout() {
           title: "Checkout Successful",
           text: "Visit Cart to see details.",
         });
+        queryClient.invalidateQueries(["checkouts", "cartServices"]);
       })
       .catch((err) => {
         console.error(err);
@@ -171,7 +174,7 @@ function Checkout() {
               type="submit"
               className="text-center w-full rounded-lg bg-primary-orange font-semibold text-lg py-4 text-white"
             >
-              Confirm Order
+              Add to Cart
             </button>
           </div>
         </form>
