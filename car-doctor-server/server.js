@@ -82,7 +82,6 @@ async function run() {
     // const productData = await productCollection.insertMany(products);
     // console.log(productData);
 
-    const checkoutCollection = database.collection("checkouts");
     const cartCollection = database.collection("cartItems");
 
     // Routes
@@ -126,29 +125,22 @@ async function run() {
         .send({ success: true, token: token });
     });
 
-    app.get("/checkout", verifyToken, async (req, res) => {
+    app.get("/cart", verifyToken, async (req, res) => {
       const email = req.query?.email;
 
       // db.inventory.find( { "item.name": { $eq: "ab" } } )
       const query = { "checkoutUserDetails.emailAddress": { $eq: email } };
-      const options = {
-        projection: { _id: 0, serviceId: 1 },
-      };
-      const result = await checkoutCollection.find(query, options).toArray();
+
+      const result = await cartCollection.find(query).toArray();
       res.send(result);
     });
 
-    app.post("/cartItems", async (req, res) => {
-      const servicesId = req.body;
-      const objIds = servicesId.map((id) => new ObjectId(id));
-      const query = { _id: { $in: objIds } };
-      const result = await serviceCollection.find(query).toArray();
-      res.send(result);
-    });
-
-    app.post("/checkout", verifyToken, async (req, res) => {
+    app.post("/cart", verifyToken, async (req, res) => {
       const checkoutDetails = req.body;
-      const result = await checkoutCollection.insertOne(checkoutDetails);
+      const result = await cartCollection.insertOne({
+        ...checkoutDetails,
+        createdAt: new Date(),
+      });
       res.send(result);
     });
 
