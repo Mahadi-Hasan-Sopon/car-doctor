@@ -34,6 +34,7 @@ const getCartItems = async (email) => {
   return result.data;
 };
 
+
 export {
   getServices,
   getServiceById,

@@ -65,7 +65,7 @@ function Checkout() {
           text: "Visit Cart to see details.",
           timer: 1500,
         });
-        queryClient.invalidateQueries(["checkouts", "cartServices"]);
+        queryClient.invalidateQueries(["cartItems"]);
       })
       .catch((err) => {
         console.error(err);

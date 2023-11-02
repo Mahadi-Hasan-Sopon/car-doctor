@@ -1,22 +1,40 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import GoBack from "../../utils/BackButton/GoBack";
 import { useContext } from "react";
 import { AuthContext } from "../../contexts/AuthContextProvider";
 import { getCartItems } from "../../API/API";
 import { TiDelete } from "react-icons/ti";
+import LoadingSpinner from "../../utils/LoadingSpinner/LoadingSpinner";
+import axios from "axios";
 
 const Cart = () => {
   const { user } = useContext(AuthContext);
-
-  const { data: cartItems } = useQuery({
-    queryKey: ["checkouts"],
+  const queryClient = useQueryClient();
+  const { data: cartItems, isFetching } = useQuery({
+    queryKey: ["cartItems"],
     queryFn: () => getCartItems(user?.email),
   });
 
-  console.log(cartItems);
+  if (isFetching) {
+    return <LoadingSpinner />;
+  }
 
-  const handleDeleteClick = (id) => {
-    console.log(id);
+  if (cartItems.length === 0) {
+    return <h1 className="text-5xl text-center font-bold">No Items in cart</h1>;
+  }
+
+  const handleDeleteClick = async (id) => {
+    try {
+      const result = await axios.delete(
+        `http://localhost:5000/cart/delete/${id}`
+      );
+      console.log(result.data);
+      if (result.data.deletedCount > 0) {
+        queryClient.invalidateQueries(["cartItems"]);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -29,7 +47,7 @@ const Cart = () => {
             <div className="flex justify-between items-center gap-6">
               <div
                 className="delete"
-                onClick={() => handleDeleteClick(cartItem?.service._id)}
+                onClick={() => handleDeleteClick(cartItem?._id)}
               >
                 <TiDelete className="text-4xl cursor-pointer hover:text-red-600" />
               </div>
@@ -50,7 +68,11 @@ const Cart = () => {
                 <p className="text-xl font-bold">
                   {`$${cartItem?.service.price?.toFixed(2)}`}
                 </p>
-                <p className="date text-xl font-medium"> Date Coming soon </p>
+                <p className="date text-xl font-medium">
+                  {cartItem?.createdAt
+                    ? new Date(cartItem?.createdAt).toDateString()
+                    : "Date missing"}
+                </p>
                 <button
                   className="text-center rounded-lg bg-primary-orange font-semibold text-xl py-3 text-white"
                   type="button"

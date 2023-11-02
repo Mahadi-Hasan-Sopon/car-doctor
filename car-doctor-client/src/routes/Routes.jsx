@@ -27,7 +27,14 @@ const routes = createBrowserRouter([
       { path: "/contact", element: <Contact /> },
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
-      { path: "/cart", element: <Cart /> },
+      {
+        path: "/cart",
+        element: (
+          <PrivateRoutes>
+            <Cart />
+          </PrivateRoutes>
+        ),
+      },
       {
         path: "/checkout/service/:serviceId",
         element: <Checkout />,
