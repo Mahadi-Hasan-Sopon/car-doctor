@@ -38,7 +38,7 @@ const Navlinks = ({ user, LogOutUser, className }) => {
         <SingleLink route={"/services"}>Services</SingleLink>
       </li>
       <li>
-        <SingleLink route={"/blog"}>Blog</SingleLink>
+        <SingleLink route={"/cart"}>Cart</SingleLink>
       </li>
       <li>
         <SingleLink route={"/contact"}>Contact</SingleLink>

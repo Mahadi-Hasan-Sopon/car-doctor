@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { BsArrowLeft } from "react-icons/bs";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { getProductById } from "../../API/API";
 import LoadingSpinner from "../../utils/LoadingSpinner/LoadingSpinner";
 import Error from "../../components/error/Error";
@@ -55,12 +55,13 @@ const ProductDetails = () => {
             {price && `Price $${price?.toFixed(2)}`}
           </h3>
           <div className="proceed mt-10">
-            <button
+            <Link
+              to={"/checkout"}
               type="button"
               className="text-center w-full rounded-lg bg-primary-orange font-semibold text-lg py-4 text-white"
             >
               Proceed Checkout
-            </button>
+            </Link>
           </div>
         </div>
       </div>

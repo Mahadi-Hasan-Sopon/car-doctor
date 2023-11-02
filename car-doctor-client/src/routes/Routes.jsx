@@ -12,6 +12,7 @@ import Services from "../pages/services/Services";
 import ServiceDetails from "../pages/serviceDetails/ServiceDetails";
 import ProductDetails from "../pages/productDetails/ProductDetails";
 import PrivateRoutes from "./PrivateRoutes";
+import Checkout from "../pages/checkout/Checkout";
 
 const routes = createBrowserRouter([
   {
@@ -27,6 +28,7 @@ const routes = createBrowserRouter([
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
       { path: "/cart", element: <Cart /> },
+      { path: "/checkout/:serviceId", element: <Checkout /> },
       {
         path: "/services/service-details/:serviceId",
         element: (
