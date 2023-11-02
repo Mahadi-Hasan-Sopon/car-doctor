@@ -112,7 +112,7 @@ async function run() {
 
     app.post("/jwt", async (req, res) => {
       const user = req.body;
-      console.log("user in /jwt ", user);
+      // console.log("user in /jwt ", user);
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: "1hr",
       });
@@ -135,6 +135,14 @@ async function run() {
         projection: { _id: 0, serviceId: 1 },
       };
       const result = await checkoutCollection.find(query, options).toArray();
+      res.send(result);
+    });
+
+    app.post("/cartItems", async (req, res) => {
+      const servicesId = req.body;
+      const objIds = servicesId.map((id) => new ObjectId(id));
+      const query = { _id: { $in: objIds } };
+      const result = await serviceCollection.find(query).toArray();
       res.send(result);
     });
 
